@@ -75,10 +75,10 @@ class Slideshow extends Component {
     this.width = this.wrapper.clientWidth;
     this.eachSlideWidth = this.width / slidesPerPage;
     const fullwidth =
-      this.eachSlideWidth * (children.length + slidesPerPage + 1);
+      this.eachSlideWidth * (children.length + slidesPerPage * 2);
     this.imageContainer.style.width = `${fullwidth}px`;
     this.imageContainer.style.transform = `translate(-${this.eachSlideWidth *
-      (this.state.index + 1)}px)`;
+      (this.state.index + slidesPerPage)}px)`;
     this.applySlideStyle();
   }
 
@@ -212,8 +212,14 @@ class Slideshow extends Component {
       )
     );
   }
+  addExtraPreviousSlides() {
+    const { children, slidesPerPage } = this.props;
+    return children
+      .slice(children.length - slidesPerPage)
+      .map(child => <div>{child}</div>);
+  }
 
-  addExtraSlides() {
+  addExtraTrailingSlides() {
     const { children, slidesPerPage } = this.props;
     return children
       .slice(0, slidesPerPage)
@@ -223,11 +229,12 @@ class Slideshow extends Component {
   }
 
   render() {
-    const { children, indicators } = this.props;
+    const { children, indicators, slidesPerPage } = this.props;
     const unhandledProps = getUnhandledProps(Slideshow.propTypes, this.props);
     const { index } = this.state;
     const style = {
-      transform: `translate(-${(index + 1) * this.eachSlideWidth}px)`
+      transform: `translate(-${(index + slidesPerPage) *
+        this.eachSlideWidth}px)`
     };
 
     return (
@@ -248,7 +255,7 @@ class Slideshow extends Component {
               style={style}
               ref={ref => (this.imageContainer = ref)}
             >
-              <div data-index="-1">{children[children.length - 1]}</div>
+              {this.addExtraPreviousSlides()}
               {children.map((each, key) => (
                 <div
                   data-index={key}
@@ -258,7 +265,7 @@ class Slideshow extends Component {
                   {each}
                 </div>
               ))}
-              {this.addExtraSlides()}
+              {this.addExtraTrailingSlides()}
             </div>
           </div>
           {this.showNextArrow()}
@@ -275,14 +282,20 @@ class Slideshow extends Component {
       autoplay,
       infinite,
       duration,
-      onChange
+      onChange,
+      slidesPerPage
     } = this.props;
     const existingTweens = this.tweenGroup.getAll();
     if (!existingTweens.length) {
       clearTimeout(this.timeout);
-      const value = { margin: -this.eachSlideWidth * (this.state.index + 1) };
+      const value = {
+        margin: -this.eachSlideWidth * (this.state.index + slidesPerPage)
+      };
       const tween = new TWEEN.Tween(value, this.tweenGroup)
-        .to({ margin: -this.eachSlideWidth * (index + 1) }, transitionDuration)
+        .to(
+          { margin: -this.eachSlideWidth * (index + slidesPerPage) },
+          transitionDuration
+        )
         .onUpdate(value => {
           this.imageContainer.style.transform = `translate(${value.margin}px)`;
         })
@@ -306,6 +319,7 @@ class Slideshow extends Component {
         } else if (newIndex >= children.length) {
           newIndex = 0;
         }
+        console.log('new Index set in state', newIndex);
         if (this.willUnmount) {
           return;
         }

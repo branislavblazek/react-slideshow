@@ -15,8 +15,7 @@ class App extends Component {
       slideImages: [
         'images/slide_2.jpg',
         'images/slide_3.jpg',
-        'images/slide_4.jpg',
-        'images/slide_5.jpg'
+        'images/slide_4.jpg'
       ],
       fadeImages: [
         'images/slide_5.jpg',
