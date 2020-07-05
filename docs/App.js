@@ -15,7 +15,8 @@ class App extends Component {
       slideImages: [
         'images/slide_2.jpg',
         'images/slide_3.jpg',
-        'images/slide_4.jpg'
+        'images/slide_4.jpg',
+        'images/slide_5.jpg'
       ],
       fadeImages: [
         'images/slide_5.jpg',
@@ -31,6 +32,9 @@ class App extends Component {
       transitionDuration: 500,
       infinite: true,
       pauseOnHover: true,
+      autoplay: false,
+      slidesPerPage: 2,
+      slidesToScroll: 2,
       indicators: i => (
         <div
           style={{
@@ -86,7 +90,7 @@ class App extends Component {
         </div>
         <br />
 
-        <h3>Fade Effect</h3>
+        {/* <h3>Fade Effect</h3>
         <div className="slide-container">
           <Fade {...fadeProperties}>
             <div className="each-fade">
@@ -128,7 +132,7 @@ class App extends Component {
             ))}
           </Zoom>
         </div>
-        <br />
+        <br /> */}
       </div>
     );
   }
