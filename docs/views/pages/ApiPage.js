@@ -118,6 +118,14 @@ const Api = () => {
                 ease, ease-in, ease-out, cubic, cubic-in, cubic-out
               </td>
             </tr>
+            <tr>
+              <td>canSwipe</td>
+              <td>boolean</td>
+              <td>true</td>
+              <td>
+                Responsible whetever user can swipe to next or previous slide by mouse
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
